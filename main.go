@@ -78,9 +78,31 @@ func FindReplaceFile(src, dst, old, new string) (occ int, lines []int, err error
 
 func main() {
 
-	old := "Go"
-	new := "Python"
-	occ, lines, err := FindReplaceFile("wikigo.txt", "wikidest.txt", old, new)
+	fmt.Print("Enter the old pattern :")
+	reader := bufio.NewReader(os.Stdin)
+	old, err := reader.ReadString('\n')
+	if err != nil {
+		fmt.Println("An error occured while reading input. Please try again", err)
+		return
+	}
+	fmt.Print("Enter the new pattern :")
+	new, err := reader.ReadString('\n')
+	if err != nil {
+		fmt.Println("An error occured while reading input. Please try again", err)
+		return
+	}
+	fmt.Print("Enter filename:")
+	filename, err := reader.ReadString('\n')
+	if err != nil {
+		fmt.Println("An error occured while reading input. Please try again", err)
+		return
+	}
+
+	old = strings.TrimSuffix(old, "\n")
+	new = strings.TrimSuffix(new, "\n")
+	filename = strings.TrimSuffix(filename, "\n")
+
+	occ, lines, err := FindReplaceFile(filename, "result.txt", old, new)
 	if err != nil {
 		fmt.Printf("Error while executing find replace: %v\n", err)
 	}
